@@ -1,23 +1,19 @@
 const express = require('express');
 const app = express();
-const { findUser } = require('./db');
+const { executeQueries } = require('./db');
 
 // Parse incoming request body as JSON
 app.use(express.json());
 
-// Route that takes 'username' and 'userId' as input and passes them to the vulnerable function
-app.post('/find-user', async (req, res) => {
+// Route that takes 'username' and 'userId' as input and calls the query-executing function
+app.post('/run-queries', async (req, res) => {
   const { username, userId, userRole } = req.body;
 
   try {
-    const user = await findUser(username, userId, userRole); // Calling vulnerable function
-    if (user.length > 0) {
-      res.json(user);
-    } else {
-      res.status(404).json({ message: 'User not found' });
-    }
+    await executeQueries(username, userId, userRole); // Call function to execute multiple queries
+    res.json({ message: 'Queries executed successfully' });
   } catch (err) {
-    res.status(500).json({ message: 'Error occurred' });
+    res.status(500).json({ message: 'Error occurred while executing queries' });
   }
 });
 
