@@ -9,9 +9,8 @@ db.serialize(() => {
 });
 
 // Vulnerable and Non-Vulnerable Queries
-function executeQueries(username, userId, userRole) {
+function mostafa(username, userId, userRole) {
   return new Promise((resolve, reject) => {
-    // Type cast userId to integer to prevent malicious input
     const safeUserId = parseInt(userId, 10); // Cast userId to integer
     
     // Query 1: Vulnerable to SQL Injection (user input)
@@ -55,9 +54,8 @@ function executeQueries(username, userId, userRole) {
       }
     });
 
-    // Resolve the promise once all queries have executed
     resolve();
   });
 }
 
-module.exports = { executeQueries };
+module.exports = { runSQLQueries };
